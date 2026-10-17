@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Divine Lessons of Gunatit Wisdom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+<!--
+=====================================================================
+  HOW TO ADD A CHAPTER (no coding needed)
+=====================================================================
+  1. Scroll down to the chapters. Each one starts with a line that
+     begins:  <script type="text/plain" class="chapter" data-title="...">
+     and ends with:  </script>
+  2. Copy one whole chapter (from its first line to its last line),
+     paste it underneath the last one, and change the title and text.
+  3. Save and re-upload the file. Chapters show up in the order they
+     appear. Same link, nothing else to do.
+
+  Writing format inside a chapter:
+     - A blank line starts a new paragraph.
+     - A line starting with "## " becomes a small heading.
+     - A line starting with "> " becomes a quote, scripture or prayer.
+     - Lines starting with "- " (one per line) become a bulleted list.
+     - *word* = italic,  **word** = bold.
+     - Optional: add data-reflect="Your question" to the first line of a
+       chapter to show a reflection question on the final screen.
+
+  Change the book title, author and intro in the BOOK section of the
+  script, just below the chapters.
+=====================================================================
+-->
+
+<style>
+:root {
+  --bg: #F2EFEA;
+  --surface: #E8E3DB;
+  --ink: #2B2622;
+  --muted: #6E655C;
+  --line: #D9D2C7;
+  --accent: #D44D00;
+  --accent-ink: #FFFFFF;
+  --fs: 1.1rem;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1C1815;
+    --surface: #2A2420;
+    --ink: #F0EBE4;
+    --muted: #A89E93;
+    --line: #3D352E;
+    --accent: #FF8A3D;
+    --accent-ink: #1C1815;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1C1815;
+  --surface: #2A2420;
+  --ink: #F0EBE4;
+  --muted: #A89E93;
+  --line: #3D352E;
+  --accent: #FF8A3D;
+  --accent-ink: #1C1815;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(4rem + env(safe-area-inset-top, 0px));
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: var(--fs);
+  line-height: 1.7;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+.ui { font-family: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif; }
+
+/* ---------- top bar (reader only) ---------- */
+.bar {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  padding-top: env(safe-area-inset-top, 0px);
+  margin-top: calc(-1 * env(safe-area-inset-top, 0px));
+}
+.bar-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: .5rem; padding: .5rem 1rem; max-width: 40rem; margin: 0 auto;
+  font-size: .95rem;
+}
+.bar button {
+  background: none; border: 0; padding: .6rem .7rem; min-height: 44px; min-width: 44px;
+  cursor: pointer; color: var(--ink); border-radius: 8px; font-weight: 600;
+}
+.bar .tools { display: flex; align-items: center; }
+.left-label { color: var(--muted); font-size: .85rem; white-space: nowrap; padding: 0 .5rem; }
+.progress { height: 3px; background: var(--line); }
+.progress i { display: block; height: 100%; width: 0; background: var(--accent); }
+
+/* ---------- layout ---------- */
+.wrap { max-width: 36rem; margin: 0 auto; padding: 0 1.25rem; }
+
+/* ---------- home ---------- */
+.home { padding-top: 4rem; padding-bottom: 5rem; }
+.home h1 {
+  color: var(--accent);
+  font-size: clamp(2.4rem, 11vw, 3.6rem);
+  line-height: 1.05; font-weight: 600; margin: 0 0 1.25rem; letter-spacing: -.01em;
+}
+.home .author { font-family: "Figtree", system-ui, sans-serif; color: var(--muted); margin: -.5rem 0 1.5rem; font-size: 1rem; }
+.home .intro { margin: 0 0 2.5rem; color: var(--ink); }
+.resume {
+  display: block; width: 100%; text-align: left; cursor: pointer;
+  background: var(--accent); color: var(--accent-ink); border: 0;
+  border-radius: 14px; padding: 1rem 1.25rem; margin-bottom: 2.5rem;
+  font-family: "Figtree", system-ui, sans-serif; font-size: 1rem; min-height: 56px;
+}
+.resume b { display: block; font-size: 1.05rem; }
+.resume span { opacity: .9; font-size: .9rem; }
+.toc { list-style: none; margin: 0; padding: 0; display: grid; gap: .8rem; }
+.toc button {
+  display: grid; grid-template-columns: 2.4rem 1fr; grid-template-areas: "n t" "n m";
+  column-gap: 1rem; row-gap: .15rem; align-items: center;
+  width: 100%; text-align: left; cursor: pointer; min-height: 72px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+  padding: 1.05rem 1.1rem;
+}
+.toc button:active { transform: scale(.99); }
+.toc .n {
+  grid-area: n; width: 2.4rem; height: 2.4rem; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--accent); color: var(--accent-ink);
+  font-family: "Figtree", sans-serif; font-weight: 600; font-size: .95rem;
+}
+.toc .t { grid-area: t; font-size: 1.1rem; font-weight: 600; line-height: 1.3; }
+.toc .m { grid-area: m; font-family: "Figtree", sans-serif; color: var(--muted); font-size: .85rem; }
+.toc .done .n { background: var(--line); color: var(--muted); }
+.toc .done .t { color: var(--muted); }
+.home .note {
+  margin-top: 3rem; padding: 1rem 1.25rem; background: var(--surface); border-radius: 12px;
+  font-family: "Figtree", system-ui, sans-serif; font-size: .95rem; line-height: 1.55; color: var(--muted);
+}
+
+/* ---------- chapter ---------- */
+.chapter-head { padding: 3.5rem 0 2rem; }
+.chapter-head .kicker { font-family: "Figtree", sans-serif; color: var(--muted); font-size: .9rem; margin: 0 0 .6rem; }
+.chapter-head h1 { color: var(--accent); font-size: clamp(2rem, 9vw, 2.8rem); line-height: 1.1; font-weight: 600; margin: 0; letter-spacing: -.01em; }
+.body p, .body li, .body blockquote { text-align: justify; hyphens: none; -webkit-hyphens: none; word-break: normal; overflow-wrap: normal; }
+.body p { margin: 0 0 1.35em; }
+.body h2 { font-size: 1.35em; line-height: 1.25; margin: 2.4em 0 .7em; font-weight: 600; color: var(--accent); }
+/* quotes and lists display as plain paragraphs */
+.body blockquote { margin: 0 0 1.35em; padding: 0; border: 0; font-style: normal; }
+.body blockquote p { margin: 0; }
+.body ul { list-style: none; margin: 0; padding: 0; }
+.body li { margin: 0 0 1.35em; }
+
+/* the pause: end of chapter */
+.pause { padding: 4rem 0 5rem; text-align: center; border-top: 1px solid var(--line); margin-top: 3rem; }
+.pause h2 { font-size: 1.6rem; line-height: 1.25; margin: 0 0 .5rem; font-weight: 600; }
+.pause .sub { font-family: "Figtree", sans-serif; color: var(--muted); font-size: 1rem; margin: 0 auto 2rem; max-width: 24rem; line-height: 1.55; }
+.reflect {
+  text-align: left; background: var(--surface); border-radius: 14px;
+  padding: 1.25rem; margin: 0 0 2rem;
+}
+.reflect small { display: block; font-family: "Figtree", sans-serif; color: var(--muted); font-size: .85rem; margin-bottom: .4rem; }
+.reflect p { margin: 0; font-size: 1.1em; line-height: 1.55; }
+.actions { display: grid; gap: .75rem; }
+.btn {
+  font-family: "Figtree", system-ui, sans-serif; font-size: 1rem; font-weight: 600;
+  min-height: 52px; padding: .8rem 1.25rem; border-radius: 12px; cursor: pointer;
+  border: 1.5px solid var(--ink); background: none; color: var(--ink);
+}
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.finish { font-style: italic; color: var(--muted); }
+
+/* gentle break reminder */
+.nudge {
+  position: fixed; left: 1rem; right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  max-width: 34rem; margin: 0 auto; z-index: 20;
+  background: var(--ink); color: var(--bg); border-radius: 14px; padding: 1rem 1.1rem;
+  font-family: "Figtree", system-ui, sans-serif; font-size: .95rem; line-height: 1.5;
+  display: flex; gap: .75rem; align-items: center; justify-content: space-between;
+  box-shadow: 0 8px 30px rgba(0,0,0,.25);
+}
+.nudge button {
+  background: none; border: 1.5px solid currentColor; color: inherit; border-radius: 10px;
+  padding: .5rem .9rem; min-height: 44px; font-weight: 600; cursor: pointer; white-space: nowrap;
+}
+[hidden] { display: none !important; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .progress i { transition: width .15s linear; }
+}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<div class="nudge" id="nudge" role="status" hidden>
+  <span>You’ve been reading for a while. Look up, breathe, and stretch before you carry on.</span>
+  <button id="nudge-ok" type="button">Okay</button>
+</div>
+
+<!-- ============================================================
+     CHAPTERS  (add new ones underneath the last one)
+     ============================================================ -->
+
+<script type="text/plain" class="chapter" data-title="Twenty-Two Steps of Surrender">
+One morning at 5:00 a.m., Yogiji Maharaj gave Prabhudas an agna. He said, “Please go to the fields and tell the farm worker not to harvest the bajri (pearl millets).” Prabhudas immediately went to the field and told him, “Bapa has said that the bajri should not be harvested.” The worker accepted this, and Prabhudas returned to Bapa. Bapa enquired, “Guru, did you tell him?” Prabhudas replied, “Yes, Bapa.” Bapa again instructed, “Go and tell him again, so he does not forget.” Prabhudas went again, and instructed the worker a second time.
+
+At around 5:30 or 5:45am, Bapa sent him once again to remind the worker. Prabhudas went back to the fields and again instructed the worker, “Bapa has said not to harvest the bajri today.” After saying this, Prabhudas returned. At that time, Bapa was going for his bath. Seeing him, Bapa asked, “Guru, did you tell the worker about the bajri?” Prabhudas replied, “Yes.” Bapa said, “He is a laborer. We should tell him again. Go once more.” So, for the fourth time, Prabhudas went and told him, “Bapa has requested that the bajri should not be harvested.”
+
+Consider the situation for a moment. If you tell the same person the same thing three times within just half an hour or forty-five minutes, what would that person’s inner condition be? It was early in the morning, around 5 and 6am. And naturally, this person must wonder: ‘Why does He keep nagging me so early in the morning?’
+
+Prabhudas returned after informing the worker yet again. Bapa had completed His bath and was coming out of the bathroom. Prabhudas was also returning and was about to sit for pooja. Seeing Him, Bapa again said, “Please go once more.” Prabhudas obediently went again. By that evening, Bapa had sent Prabhudas to the farm twenty-one times. When Prabhudas returned for the seventeenth time, the worker became aggressive. He shouted, “I am not deaf! Do you have nothing better to do than repeat the same thing?”
+
+For Prabhudas however, this was His Guru’s agna. When He returned to the temple, Bapa once again said, “Guru, go and tell him about the bajri.” Prabhudas then went for the nineteenth time. On seeing Prabhudas, the worker’s frustration boiled over into a threat: “If you step one foot here again, I will beat you!”
+
+Some time later, Yogiji Maharaj sent Prabhudas for the twentieth time. “Guru, go and tell him.” This time, the worker was also waiting. He must have thought: “Now let him come, I will teach Him a lesson that He’ll never forget.” As soon as Prabhudas reached him, the worker began to beat Him up. Despite the beatings, Prabhudas serenely said: “Bapa has requested that we not cut the bajri.” He gracefully accepted the beatings as prasad.
+
+Prabhudas then returned to Bapa, but didn’t complain about what had occurred. When Bapa saw Prabhudas, He said yet again, “Go, Guru. Tell him one more time.”
+
+How would the ordinary mind react after enduring a physical beating? Most people would never have returned. Prabhudas did not live by human logic. He lived by the words of Yogiji Maharaj. He went again. When Prabhudas went for the twenty-first time, the worker suddenly awakened to what was truly happening. He recognised that Prabhudas wasn’t at fault. With folded hands, he said to Him: “I am sorry for my anger, I understand now that it is Yogiji Maharaj who is orchestrating this divine play between us.”
+
+Through twenty-one walks of steadfast obedience, Prabhudas demonstrated the pinnacle of a true bhagat’s surrender, proving that when an agna is embraced with absolute faith, even the heaviest blows turn into a canvas of divine grace.
+
+## Pause and reflect
+
+Stay with the story for a moment. What is the true miracle of this prasang?
+
+Was it that Prabhudas walked to the field twenty-one times and even risked getting slapped? Or that His inner peace and trust never changed?
+
+- Why do you think Yogiji Maharaj repeated the same instruction again and again?
+- What does this prasang show us about the difference between obedience and surrender?
+
+## Make it your own
+
+This is where the prasang becomes your own.
+
+- What am I living by today? My own logic or Guruhari or Bhagvadi’s guidance?
+- What is the “twenty-first journey” in my own life? Where do I feel like saying, “Enough. I don’t want to do this anymore.”
+- Which instruction from Swamiji have I quietly stopped living because it became difficult, repetitive, or uncomfortable?
+- When life becomes unfair, do I continue walking or do I begin questioning?
+- What causes me to abandon my spiritual practices more quickly: fatigue, criticism, inconvenience, or disappointment?
+- If I truly believed every agna was shaping my soul, how differently would I respond to life’s repeated challenges?
+
+## This week’s practice
+
+Choose one practice for this week.
+
+- Identify one instruction or spiritual practice you have become inconsistent with.
+- For seven days, live it wholeheartedly, as your offering to Guruhari.
+- Whenever your mind says, “I’ve done enough,” pause and ask: “Can I take one more step?”
+- At the end of each day reflect: “Today, did I live by convenience or by commitment?”
+
+## To remember
+
+The highest surrender is to keep walking after the mind has stopped understanding.
+
+## A prayer
+
+O, Guruhari Prabodh Swamiji...
+
+Please grant me the strength to live by Your words rather than by my own changing thoughts. When my mind grows tired, impatient, or discouraged, help me take one more step in faith.
+
+Please teach me to embrace every agna with joy, knowing that each act of surrender shapes my soul.
+
+May I never measure the path by difficulty, but only by the privilege of walking it with You.
+</script>
+
+<script type="text/plain" class="chapter" data-title="Beyond Why">
+The incident took place while Yogiji Maharaj was staying in the village of Adval.
+
+While travelling, one of the sadhus accompanying Him fell critically ill. Out of deep concern for His disciple’s well-being, Yogiji Maharaj turned to Prabhudas and delivered an agna:
+
+> “Go to the neighboring village and bring our regular doctor here to treat our sadhu.”
+
+Without a second thought, Prabhudas set out on a bicycle, embarking on a seven-mile journey. Upon His arrival, Prabhudas delivered the message, explaining the sadhu’s illness and conveying Yogiji Maharaj’s urgent request. The doctor’s face, however, clouded with anxiety. “My own son is gravely ill at the moment and undergoing treatment,” the doctor replied. “As soon as his condition is stable, I will come.” Prabhudas politely emphasised that Yogiji Maharaj had requested him to come as quickly as possible, but the doctor insisted on tending to his son first.
+
+With no other choice, Prabhudas pedaled seven miles back to Adval to report the situation. By this time He had already covered fourteen miles. As evening gave way to deep night, the doctor had still not appeared.
+
+Summoning Prabhudas once again, Yogiji Maharaj inquired, “Prabhudas, did you actually inform the doctor?”
+
+“Yes, Bapa,” Prabhudas answered gently. “I went and spoke with him face to face.”
+
+“But you must not have insisted enough,” Yogiji Maharaj replied. “Go back right now and make sure you bring a doctor.”
+
+By then, it was the middle of the night. The unpaved rural roads were riddled with deep potholes and cloaked in pitch-black darkness. Riding without a lantern, Prabhudas fell repeatedly along the way, yet He pressed on until He reached the doctor’s house.
+
+When He knocked on the door, the doctor’s wife answered. She delivered some distressing news: “My husband took our son to a hospital in Ahmedabad. The boy developed severe pneumonia and needed emergency treatment.”
+
+With the regular doctor unavailable, Prabhudas looked for an alternative. “Is there another doctor in this village?” He asked. The woman kindly walked with Him down the road to point out the residence of another local physician.
+
+Prabhudas knocked and woke the second doctor from his sleep, urgently explaining the medical crisis back at their camp. This doctor, however, viewed the situation through a purely professional lens. “Who is going to pay my consulting fee?” he demanded.
+
+“We will take care of your payment,” Prabhudas promised. “Please just come with me.”
+
+“Well, my vehicle is currently unavailable,” the doctor countered. “I will come tomorrow morning when my car arrives. I can’t travel tonight.”
+
+With no other options left, Prabhudas hopped back on His bicycle and pedaled seven miles back to Adval through the remaining hours of the night.
+
+By the time He returned, the sun was beginning to rise. As soon as Yogiji Maharaj woke up, Prabhudas briefed Him on everything that had transpired, explaining that the first doctor was away in Ahmedabad, but a second doctor had promised to arrive within the hour.
+
+Yogiji Maharaj looked at Him and asked, “Guru, who is going to pay this new doctor?”
+
+“Bapa, I told him that we would cover the costs,” Prabhudas replied.
+
+The master shook His head softly. “Is that your money? That wealth belongs entirely to Thakorji. We can’t afford a doctor who demands payment in this manner. Go back immediately and tell him not to come.”
+
+This meant another seven miles out and another seven miles back. Without a single word of complaint, Prabhudas simply said, “I will go inform him right away, Bapa.” As Prabhudas turned back onto the grueling road, Bapa gathered the remaining sadhus and devotees. “Let us sit together, do bhajan, and pray for his recovery,” He requested.
+
+When Prabhudas finally returned, having cycled a total of forty-two miles, a remarkable sight awaited Him. The sick sadhu had recovered completely through the power of bhajan.
+
+For most people, such an experience would give rise to endless questions. If Yogiji Maharaj intended to heal the sadhu through prayer, why send Prabhudas on a forty-two-mile journey through the darkness? Why allow Him to endure such hardship?
+
+Prabhudas never asked those questions. His trust was complete. He accepted every instruction without allowing a single doubt to enter His heart. Such was His nishkapat trust and flawless nirdosh buddhi towards His Guru.
+
+Prabhudas did not allow a single negative thought or doubt to even enter His mind.
+
+## Pause and reflect
+
+Pause for a moment. Imagine yourself riding beside Prabhudas through the darkness. Feel the exhaustion, the uncertainty, and the unanswered questions.
+
+What does this prasang reveal about the difference between trusting Guruhari and understanding Guruhari?
+
+## Make it your own
+
+This is where the prasang becomes your own.
+
+- What are the “forty-two miles” in my own life? Which journey has felt exhausting, confusing, or seemingly pointless?
+- Is there a situation where I am still asking, “Why did this happen to me?”
+- When life doesn’t make sense, do I trust less or do I trust more?
+- Which unanswered “why” has prevented me from moving forward spiritually?
+- If Swamiji never explained His reasons, would I still joyfully continue walking?
+- What would change in my life if I believed that every step, even the ones I don’t understand, was shaping my soul?
+
+## This week’s practice
+
+For the next seven days:
+
+- Whenever your mind asks “Why?”, gently replace it with: “What is Swamiji preparing me for?”
+- Think of one difficult journey in your life. Instead of asking why it happened, write down how it has shaped your character.
+- Practice accepting one inconvenience each day without complaint, offering it silently to Swamiji.
+- Every evening ask yourself: “Did I spend more energy questioning or trusting today?”
+
+## To remember
+
+The soul finds peace when trust reaches beyond understanding.
+
+## A prayer
+
+O, Guruhari Prabodh Swamiji...
+
+Grant me the faith to continue walking, even when I cannot see the purpose of the path.
+
+When my mind searches for explanations, teach my heart to rest in Your wisdom.
+
+Free me from the need to understand everything before I trust.
+
+May every unanswered “why” become another opportunity to deepen my surrender and strengthen my relationship with You.
+
+Help me to walk with joy, knowing that every step guided by You carries a purpose far greater than I can yet see.
+</script>
+
+<!-- ============================================================
+     BOOK DETAILS & READER CODE  (you shouldn't need to edit the code)
+     ============================================================ -->
+<script>
+const BOOK = {
+  title: "Divine Lessons of Gunatit Wisdom",
+  author: "",
+  intro: "One prasang at a time, with questions to sit with and a practice for the week. Take one, then put your phone down.",
+  breakEveryMinutes: 15   // gentle “look up” reminder; set to 0 to turn off
+};
+
+/* ---------- helpers ---------- */
+const $app = document.getElementById('app');
+const WPM = 200;
+const KEY = 'reader:' + BOOK.title.replace(/\s+/g, '-').toLowerCase();
+
+function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function inline(s) {
+  return esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>');
+}
+function el(html) { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstChild; }
+
+/* ---------- load chapters from the page ---------- */
+const chapters = [...document.querySelectorAll('script.chapter')].map((s, i) => {
+  const text = s.textContent.trim();
+  const words = text.split(/\s+/).length;
+  return {
+    i,
+    title: s.dataset.title || 'Chapter ' + (i + 1),
+    reflect: s.dataset.reflect || '',
+    text,
+    minutes: Math.max(1, Math.round(words / WPM))
+  };
+});
+
+function bodyHtml(text) {
+  return text.split(/\n\s*\n/).map(block => {
+    block = block.trim();
+    const lines = block.split('\n');
+    if (lines.every(l => l.trim().startsWith('- '))) {
+      return '<ul>' + lines.map(l => '<li>' + inline(l.trim().slice(2)) + '</li>').join('') + '</ul>';
+    }
+    if (block.startsWith('## ')) return '<h2>' + inline(block.slice(3)) + '</h2>';
+    if (block.startsWith('> ')) {
+      const q = block.split('\n').map(l => l.replace(/^>\s?/, '')).join(' ');
+      return '<blockquote><p>' + inline(q) + '</p></blockquote>';
+    }
+    return '<p>' + inline(block).replace(/\n/g, ' ') + '</p>';
+  }).join('\n');
+}
+
+/* ---------- saved state (fails quietly if storage is blocked) ---------- */
+function load() {
+  try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+}
+function save(patch) {
+  const s = Object.assign(load(), patch);
+  try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {}
+  return s;
+}
+function loadPrefs() {
+  const s = load();
+  if (s.theme) document.documentElement.setAttribute('data-theme', s.theme);
+  if (s.fs) document.documentElement.style.setProperty('--fs', s.fs + 'rem');
+}
+loadPrefs();
+
+/* ---------- reading-time nudge ---------- */
+let readingSeconds = 0, lastTick = null, nudgeTimer = null;
+const nudge = document.getElementById('nudge');
+document.getElementById('nudge-ok').addEventListener('click', () => { nudge.hidden = true; });
+function startNudgeClock() {
+  stopNudgeClock();
+  if (!BOOK.breakEveryMinutes) return;
+  nudgeTimer = setInterval(() => {
+    if (document.hidden) return;
+    readingSeconds += 5;
+    if (readingSeconds >= BOOK.breakEveryMinutes * 60) {
+      readingSeconds = 0;
+      nudge.hidden = false;
+    }
+  }, 5000);
+}
+function stopNudgeClock() { if (nudgeTimer) clearInterval(nudgeTimer); nudgeTimer = null; nudge.hidden = true; }
+
+/* ---------- views ---------- */
+let scrollHandler = null;
+function clearScroll() {
+  if (scrollHandler) window.removeEventListener('scroll', scrollHandler);
+  scrollHandler = null;
+}
+
+function renderHome() {
+  clearScroll(); stopNudgeClock();
+  document.title = BOOK.title;
+  const s = load();
+  const done = s.done || [];
+  let resume = '';
+  if (typeof s.last === 'number' && chapters[s.last] && !(done.includes(s.last) && s.pos == null)) {
+    resume = '<button class="resume" id="resume" type="button"><b>Continue reading</b><span>' +
+      esc(chapters[s.last].title) + '</span></button>';
+  }
+  const rows = chapters.map(c =>
+    '<li><button type="button" data-ch="' + c.i + '" class="' + (done.includes(c.i) ? 'done' : '') + '">' +
+    '<span class="n">' + (c.i + 1) + '</span>' +
+    '<span class="t">' + esc(c.title) + '</span>' +
+    '<span class="m">' + (done.includes(c.i) ? 'Read' : c.minutes + ' min') + '</span></button></li>'
+  ).join('');
+  $app.innerHTML =
+    '<main class="wrap home">' +
+      '<h1>' + esc(BOOK.title) + '</h1>' +
+      (BOOK.author ? '<p class="author">' + esc(BOOK.author) + '</p>' : '') +
+      '<p class="intro">' + esc(BOOK.intro) + '</p>' +
+      resume +
+      '<ul class="toc">' + rows + '</ul>' +
+      '<p class="note">One chapter at a time. There is no feed here, nothing loads automatically, and each chapter ends so you can stop.</p>' +
+    '</main>';
+  $app.querySelectorAll('[data-ch]').forEach(b => b.addEventListener('click', () => go(+b.dataset.ch)));
+  const r = document.getElementById('resume');
+  if (r) r.addEventListener('click', () => go(s.last));
+  window.scrollTo(0, 0);
+}
+
+function renderChapter(i) {
+  const c = chapters[i];
+  if (!c) return renderHome();
+  clearScroll();
+  document.title = c.title + ' · ' + BOOK.title;
+  const next = chapters[i + 1];
+  const s = load();
+
+  $app.innerHTML =
+    '<header class="bar ui">' +
+      '<div class="bar-row">' +
+        '<button type="button" id="back" aria-label="Back to contents">‹ Contents</button>' +
+        '<span class="left-label" id="left" aria-live="off"></span>' +
+        '<div class="tools">' +
+          '<button type="button" id="smaller" aria-label="Smaller text">A−</button>' +
+          '<button type="button" id="bigger" aria-label="Larger text">A+</button>' +
+          '<button type="button" id="theme" aria-label="Switch light or dark">◐</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="progress"><i id="fill"></i></div>' +
+    '</header>' +
+    '<article class="wrap">' +
+      '<div class="chapter-head">' +
+        '<p class="kicker">Chapter ' + (i + 1) + ' of ' + chapters.length + ' · ' + c.minutes + ' min read</p>' +
+        '<h1>' + esc(c.title) + '</h1>' +
+      '</div>' +
+      '<div class="body">' + bodyHtml(c.text) + '</div>' +
+      '<section class="pause" aria-label="End of chapter">' +
+        '<h2>That’s the end of this chapter.</h2>' +
+        '<p class="sub">Look up from the screen for a moment. Let it settle before you go on.</p>' +
+        (c.reflect ? '<div class="reflect"><small>Something to think about</small><p>' + esc(c.reflect) + '</p></div>' : '') +
+        '<div class="actions">' +
+          (next ? '<button class="btn primary" type="button" id="next">Next: ' + esc(next.title) + '</button>' : '<p class="finish">You’ve reached the end of what’s here so far. More is on the way.</p>') +
+          '<button class="btn" type="button" id="toc">Back to contents</button>' +
+        '</div>' +
+      '</section>' +
+    '</article>';
+
+  document.getElementById('back').addEventListener('click', () => go(null));
+  document.getElementById('toc').addEventListener('click', () => go(null));
+  if (next) document.getElementById('next').addEventListener('click', () => go(i + 1));
+
+  document.getElementById('smaller').addEventListener('click', () => size(-0.1));
+  document.getElementById('bigger').addEventListener('click', () => size(0.1));
+  document.getElementById('theme').addEventListener('click', toggleTheme);
+
+  const fill = document.getElementById('fill');
+  const left = document.getElementById('left');
+  let saveT = null;
+  function update() {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 1;
+    fill.style.width = (p * 100) + '%';
+    const mins = Math.ceil(c.minutes * (1 - p));
+    left.textContent = p > 0.97 ? 'Done' : mins + ' min left';
+    clearTimeout(saveT);
+    saveT = setTimeout(() => {
+      const st = load();
+      const done = st.done || [];
+      if (p > 0.97 && !done.includes(i)) done.push(i);
+      save({ last: i, pos: p > 0.97 ? null : p, done });
+    }, 400);
+  }
+  scrollHandler = update;
+  window.addEventListener('scroll', update, { passive: true });
+
+  save({ last: i });
+  window.scrollTo(0, 0);
+  if (s.last === i && typeof s.pos === 'number' && s.pos > 0.02) {
+    requestAnimationFrame(() => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      window.scrollTo(0, s.pos * max);
+      update();
+    });
+  } else update();
+  startNudgeClock();
+}
+
+function size(d) {
+  const cur = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--fs')) || 1.1;
+  const v = Math.min(1.7, Math.max(0.95, +(cur + d).toFixed(2)));
+  document.documentElement.style.setProperty('--fs', v + 'rem');
+  save({ fs: v });
+}
+function toggleTheme() {
+  const root = document.documentElement;
+  const isDark = root.getAttribute('data-theme') === 'dark' ||
+    (!root.getAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches);
+  const t = isDark ? 'light' : 'dark';
+  root.setAttribute('data-theme', t);
+  save({ theme: t });
+}
+
+/* ---------- routing: #/ is contents, #/2 is chapter 2 ---------- */
+function go(i) { location.hash = (i === null) ? '#/' : '#/' + (i + 1); }
+function route() {
+  const m = location.hash.match(/^#\/(\d+)$/);
+  if (m) renderChapter(+m[1] - 1); else renderHome();
+}
+window.addEventListener('hashchange', route);
+route();
+</script>
+</body>
+</html>
